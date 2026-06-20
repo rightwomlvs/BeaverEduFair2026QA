@@ -36,8 +36,8 @@
 </head>
 <body>
 
-    <!-- 整個 App 容器 (移除 items-center 與 overflow-hidden，允許畫面正常垂直滾動) -->
-    <div class="min-h-screen flex justify-center overflow-x-hidden relative">
+    <!-- 整個 App 容器 (改用 100dvh 適應手機瀏覽器真實高度) -->
+    <div class="min-h-[100dvh] flex justify-center overflow-x-hidden relative">
         
         <!-- ================= 開始畫面 ================= -->
         <div id="start-screen" class="absolute inset-0 z-50 flex flex-col justify-center items-center bg-[#161616]">
@@ -50,8 +50,8 @@
             </button>
         </div>
 
-        <!-- ================= 主畫面 ================= (移除 h-full 與 pb-20) -->
-        <div id="main-screen" class="w-full max-w-3xl min-h-screen flex flex-col relative hidden">
+        <!-- ================= 主畫面 ================= (改用 100dvh) -->
+        <div id="main-screen" class="w-full max-w-3xl min-h-[100dvh] flex flex-col relative hidden">
             
             <!-- Header -->
             <div class="w-full bg-[#e27a3f] text-center py-3 md:py-5 shadow-lg">
@@ -100,8 +100,8 @@
                 </a>
             </div>
 
-            <!-- 底部裝飾與版權 (改為相對流排版，並預留 pb-24 防止被底部按鈕列遮住) -->
-            <div class="w-full text-center text-gray-500 text-sm flex flex-col items-center gap-2 z-10 pointer-events-none mt-auto pt-10 pb-24">
+            <!-- 底部裝飾與版權 (增加 pb-36 確保手機版絕對不會被底部按鈕列遮住) -->
+            <div class="w-full text-center text-gray-500 text-sm flex flex-col items-center gap-2 z-10 pointer-events-none mt-auto pt-10 pb-36 md:pb-28">
                 <div id="mascot" class="text-3xl animate-bounce mb-2">
                     ʕ•ᴥ•ʔ
                 </div>
@@ -111,17 +111,17 @@
                 </div>
             </div>
 
-            <!-- 導覽列與控制項 -->
-            <div class="fixed bottom-0 left-0 w-full bg-[#161616] border-t border-[#333] p-4 flex justify-between items-center z-20">
-                <button id="btn-prev" class="px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 transition-colors">
+            <!-- 導覽列與控制項 (優化手機版字體與按鈕間距避免擠壓變形) -->
+            <div class="fixed bottom-0 left-0 w-full bg-[#161616] border-t border-[#333] p-3 md:p-4 flex justify-between items-center z-20">
+                <button id="btn-prev" class="px-2 py-2 md:px-4 md:py-2 border-2 text-base md:text-lg border-gray-600 text-gray-600 transition-colors">
                     &lt; 上一題
                 </button>
 
-                <button id="btn-sound" class="px-4 py-2 text-gray-400 hover:text-white text-lg transition-colors">
+                <button id="btn-sound" class="px-2 py-2 md:px-4 md:py-2 text-gray-400 hover:text-white text-base md:text-lg transition-colors">
                     🔊 音效開
                 </button>
 
-                <button id="btn-next" class="px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors">
+                <button id="btn-next" class="px-2 py-2 md:px-4 md:py-2 border-2 text-base md:text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors">
                     下一題 &gt;
                 </button>
             </div>
@@ -338,20 +338,20 @@
         function updateButtons() {
             // 上一題按鈕狀態
             if (currentIndex === 0) {
-                btnPrev.className = "px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 cursor-not-allowed";
+                btnPrev.className = "px-2 py-2 md:px-4 md:py-2 border-2 text-base md:text-lg border-gray-600 text-gray-600 cursor-not-allowed";
                 btnPrev.disabled = true;
             } else {
-                btnPrev.className = "px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
+                btnPrev.className = "px-2 py-2 md:px-4 md:py-2 border-2 text-base md:text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
                 btnPrev.disabled = false;
             }
 
             // 下一題按鈕狀態
             if (currentIndex === qaData.length) {
-                btnNext.className = "px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 cursor-not-allowed";
+                btnNext.className = "px-2 py-2 md:px-4 md:py-2 border-2 text-base md:text-lg border-gray-600 text-gray-600 cursor-not-allowed";
                 btnNext.innerText = "結束";
                 btnNext.disabled = true;
             } else {
-                btnNext.className = "px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
+                btnNext.className = "px-2 py-2 md:px-4 md:py-2 border-2 text-base md:text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
                 btnNext.disabled = false;
                 // 如果目前是最後一題 (Q6)，按鈕文字改為提示前往報名
                 if (currentIndex === qaData.length - 1) {
