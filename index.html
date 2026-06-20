@@ -26,8 +26,8 @@
 </head>
 <body>
 
-    <!-- 整個 App 容器 -->
-    <div class="min-h-screen flex justify-center items-center overflow-hidden relative">
+    <!-- 整個 App 容器 (移除 items-center 與 overflow-hidden，允許畫面正常垂直滾動) -->
+    <div class="min-h-screen flex justify-center overflow-x-hidden relative">
         
         <!-- ================= 開始畫面 ================= -->
         <div id="start-screen" class="absolute inset-0 z-50 flex flex-col justify-center items-center bg-[#161616]">
@@ -40,8 +40,8 @@
             </button>
         </div>
 
-        <!-- ================= 主畫面 ================= -->
-        <div id="main-screen" class="w-full max-w-3xl h-full min-h-screen flex flex-col relative pb-20 hidden">
+        <!-- ================= 主畫面 ================= (移除 h-full 與 pb-20) -->
+        <div id="main-screen" class="w-full max-w-3xl min-h-screen flex flex-col relative hidden">
             
             <!-- Header -->
             <div class="w-full bg-[#e27a3f] text-center py-3 md:py-5 shadow-lg">
@@ -77,8 +77,8 @@
                 </div>
             </div>
 
-            <!-- 底部裝飾與版權 -->
-            <div class="absolute bottom-20 w-full text-center text-gray-500 text-sm flex flex-col items-center gap-2 z-10 pointer-events-none">
+            <!-- 底部裝飾與版權 (改為相對流排版，並預留 pb-24 防止被底部按鈕列遮住) -->
+            <div class="w-full text-center text-gray-500 text-sm flex flex-col items-center gap-2 z-10 pointer-events-none mt-auto pt-10 pb-24">
                 <div id="mascot" class="text-3xl animate-bounce mb-2">
                     ʕ•ᴥ•ʔ
                 </div>
