@@ -9,8 +9,11 @@
     <!-- 引入像素字體 -->
     <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
     <style>
+        /* 強制所有文字、按鈕與連結都使用像素字體，確保 100% 一致 */
+        body, button, a, input {
+            font-family: 'DotGothic16', monospace, sans-serif !important;
+        }
         body {
-            font-family: 'DotGothic16', monospace, sans-serif;
             background-color: #161616;
             color: white;
             overflow-x: hidden;
@@ -22,6 +25,13 @@
             0%, 100% { opacity: 1; }
             50% { opacity: 0; }
         }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
     </style>
 </head>
 <body>
@@ -32,7 +42,7 @@
         <!-- ================= 開始畫面 ================= -->
         <div id="start-screen" class="absolute inset-0 z-50 flex flex-col justify-center items-center bg-[#161616]">
             <h1 class="text-4xl md:text-6xl text-[#e27a3f] mb-8 animate-pulse text-center leading-tight">
-                2026<br/>貍想教育節
+                2026 貍想教育節
             </h1>
             <p class="text-[#89d0d8] text-xl mb-12">遊戲 Q & A</p>
             <button id="btn-start" class="px-8 py-4 border-4 border-white text-white text-2xl hover:bg-white hover:text-[#161616] transition-colors cursor-pointer uppercase tracking-widest">
@@ -45,7 +55,7 @@
             
             <!-- Header -->
             <div class="w-full bg-[#e27a3f] text-center py-3 md:py-5 shadow-lg">
-                <h1 class="text-3xl md:text-5xl font-bold tracking-widest text-white">
+                <h1 class="text-3xl md:text-5xl tracking-widest text-white">
                     2026 貍想教育節
                 </h1>
             </div>
@@ -60,21 +70,34 @@
             <div id="qa-container" class="flex-1 px-6 md:px-12 flex flex-col gap-6 cursor-pointer relative z-10">
                 <!-- 題目區 -->
                 <div class="flex items-start gap-3">
-                    <div id="q-num" class="border-2 border-dashed border-[#95d58c] text-[#95d58c] px-3 py-1 text-xl md:text-2xl flex-none font-bold">
+                    <div id="q-num" class="border-2 border-dashed border-[#95d58c] text-[#95d58c] px-3 py-1 text-xl md:text-2xl flex-none">
                         Q1
                     </div>
-                    <div id="q-text" class="flex-1 text-[#95d58c] text-xl md:text-2xl leading-relaxed font-bold mt-1 tracking-wide">
+                    <div id="q-text" class="flex-1 text-[#95d58c] text-xl md:text-2xl leading-relaxed mt-1 tracking-wide">
                         題目載入中...
                     </div>
                 </div>
 
-                <!-- 回答區 -->
-                <div class="flex items-start gap-3 mt-4">
-                    <div class="flex-none text-[#e27a3f] text-2xl mt-1 animate-pulse">
+                <!-- 回答區 (修復了文字掉到下一行的排版問題) -->
+                <div class="flex items-start mt-4">
+                    <div id="ans-arrow" class="text-[#e27a3f] text-2xl mt-1 mr-3 animate-pulse opacity-0 transition-opacity shrink-0">
                         ▶▶
                     </div>
-                    <div class="flex-1 text-gray-200 text-lg md:text-xl leading-loose tracking-wide min-h-[300px]"><span id="a-text" class="whitespace-pre-wrap"></span><span id="cursor" class="inline-block w-3 h-5 bg-white ml-1 animate-blink"></span></div>
+                    <div class="flex-1 text-gray-200 text-lg md:text-xl leading-loose tracking-wide min-h-[300px]">
+                        <span id="a-text" class="whitespace-pre-wrap break-words"></span><span id="cursor" class="inline-block w-3 h-5 bg-white ml-1 animate-blink"></span>
+                    </div>
                 </div>
+            </div>
+
+            <!-- 獨立的報名頁面區塊 (CTA) -->
+            <div id="cta-container" class="hidden flex-1 px-6 md:px-12 flex-col items-center justify-center gap-8 relative z-10 animate-fade-in w-full max-w-md mx-auto pb-10">
+                <h2 class="text-2xl md:text-3xl text-[#89d0d8] tracking-widest text-center">
+                    準備好加入這場遊戲了嗎？
+                </h2>
+                <img src="https://drive.google.com/thumbnail?id=1ylyOESt8vhTd6VHLJUUz2KtetOrwwrnX&sz=w1000" alt="費用圖" class="w-full rounded-lg shadow-lg border-2 border-gray-600">
+                <a href="https://www.beaversophy.com/merchandises/af2991c6-b3f4-494b-8285-7d33a90b39c7?fbclid=IwY2xjawSXAs9leHRuA2FlbQIxMABicmlkETFRNXZiNFM4YVZScTJ3MHhlc3J0YwZhcHBfaWQQMjIyMDM5MTc4ODIwMDg5MgABHgGNG6GIb6Y52KJWxbKbsv7u4HvHLDTj32rqwv3qc11_zhhTy1JAhjH2YFE6_aem_YF3lLVzEDGcBlwf0VSSCTA" target="_blank" rel="noopener noreferrer" class="px-8 py-4 bg-[#e27a3f] text-white text-xl md:text-2xl rounded-md hover:bg-[#d06830] transition-colors border-2 border-white shadow-[4px_4px_0px_0px_rgba(255,255,255,0.3)] hover:shadow-none hover:translate-y-1 hover:translate-x-1 cursor-pointer tracking-widest text-center w-full">
+                    立即報名
+                </a>
             </div>
 
             <!-- 底部裝飾與版權 (改為相對流排版，並預留 pb-24 防止被底部按鈕列遮住) -->
@@ -82,9 +105,9 @@
                 <div id="mascot" class="text-3xl animate-bounce mb-2">
                     ʕ•ᴥ•ʔ
                 </div>
-                <div class="flex items-center gap-2 text-gray-400">
-                    <span class="border border-gray-400 px-1 rounded-sm text-xs">U</span>
-                    <span>貍想教育</span>
+                <div class="flex items-center justify-center gap-3">
+                    <img src="https://drive.google.com/thumbnail?id=1GjDpKbc1ISiYKvk9peVNP4YlgIBnlTu6&sz=w1000" alt="貍想教育 Logo" class="h-5 md:h-6 opacity-80">
+                    <span class="text-gray-400 text-base tracking-widest">貍想教育</span>
                 </div>
             </div>
 
@@ -146,6 +169,7 @@
         let audioCtx = null;
         let typingTimer = null;
         let bgmTimer = null;
+        let delayTimer = null;
         let noteIndex = 0;
         const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63]; 
 
@@ -163,6 +187,7 @@
         const btnNext = document.getElementById('btn-next');
         const btnSound = document.getElementById('btn-sound');
         const qaContainer = document.getElementById('qa-container');
+        const ctaContainer = document.getElementById('cta-container');
 
         // --- 音效系統 (Web Audio API) ---
         function initAudio() {
@@ -230,10 +255,46 @@
 
         // --- 畫面更新與打字邏輯 ---
         function renderQA() {
+            // 如果進入最後的報名頁
+            if (currentIndex === qaData.length) {
+                qaContainer.classList.add('hidden');
+                qaContainer.classList.remove('flex');
+                ctaContainer.classList.remove('hidden');
+                ctaContainer.classList.add('flex');
+                
+                if (typingTimer) clearInterval(typingTimer);
+                if (delayTimer) clearTimeout(delayTimer);
+                isTyping = false;
+                mascotEl.innerText = "ʕ •̀ o •́ ʔ";
+                updateButtons();
+                return;
+            }
+
+            // 一般 Q&A 頁面
+            qaContainer.classList.remove('hidden');
+            qaContainer.classList.add('flex');
+            ctaContainer.classList.add('hidden');
+            ctaContainer.classList.remove('flex');
+
             qNumEl.innerText = `Q${currentIndex + 1}`;
             qTextEl.innerText = qaData[currentIndex].q;
+            
+            // 初始化狀態：清空答案、隱藏箭頭與游標
+            aTextEl.innerText = "";
+            document.getElementById('ans-arrow').style.opacity = '0';
+            cursorEl.style.display = 'none';
+            mascotEl.innerText = "ʕ•ᴥ•ʔ";
+            isTyping = true; // 進入準備打字狀態，允許點擊跳過
+            
             updateButtons();
-            startTyping();
+            
+            if (typingTimer) clearInterval(typingTimer);
+            if (delayTimer) clearTimeout(delayTimer);
+            
+            // ★ 設定 2 秒後才開始跑答案
+            delayTimer = setTimeout(() => {
+                startTyping();
+            }, 2000);
         }
 
         function startTyping() {
@@ -242,6 +303,8 @@
             isTyping = true;
             let charIndex = 0;
             
+            // 顯示箭頭與游標
+            document.getElementById('ans-arrow').style.opacity = '1';
             cursorEl.style.display = 'inline-block';
             mascotEl.innerText = "ʕ•ᴥ•ʔ";
 
@@ -263,9 +326,11 @@
         }
 
         function finishTyping() {
+            if (delayTimer) clearTimeout(delayTimer);
             if (typingTimer) clearInterval(typingTimer);
             isTyping = false;
             aTextEl.innerText = qaData[currentIndex].a;
+            document.getElementById('ans-arrow').style.opacity = '1';
             cursorEl.style.display = 'none';
             mascotEl.innerText = "ʕ •̀ o •́ ʔ";
         }
@@ -281,12 +346,19 @@
             }
 
             // 下一題按鈕狀態
-            if (currentIndex === qaData.length - 1) {
+            if (currentIndex === qaData.length) {
                 btnNext.className = "px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 cursor-not-allowed";
+                btnNext.innerText = "結束";
                 btnNext.disabled = true;
             } else {
                 btnNext.className = "px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
                 btnNext.disabled = false;
+                // 如果目前是最後一題 (Q6)，按鈕文字改為提示前往報名
+                if (currentIndex === qaData.length - 1) {
+                    btnNext.innerText = "前往報名 >";
+                } else {
+                    btnNext.innerText = "下一題 >";
+                }
             }
         }
 
@@ -308,7 +380,7 @@
         });
 
         btnNext.addEventListener('click', () => {
-            if (currentIndex < qaData.length - 1) {
+            if (currentIndex < qaData.length) {
                 currentIndex++;
                 renderQA();
             }
