@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 貍想教育節 - 遊戲 Q&A</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入像素字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'DotGothic16', monospace, sans-serif;
+            background-color: #161616;
+            color: white;
+            overflow-x: hidden;
+        }
+        .animate-blink {
+            animation: blink 1s step-end infinite;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 整個 App 容器 -->
+    <div class="min-h-screen flex justify-center items-center overflow-hidden relative">
+        
+        <!-- ================= 開始畫面 ================= -->
+        <div id="start-screen" class="absolute inset-0 z-50 flex flex-col justify-center items-center bg-[#161616]">
+            <h1 class="text-4xl md:text-6xl text-[#e27a3f] mb-8 animate-pulse text-center leading-tight">
+                2026<br/>貍想教育節
+            </h1>
+            <p class="text-[#89d0d8] text-xl mb-12">遊戲 Q & A</p>
+            <button id="btn-start" class="px-8 py-4 border-4 border-white text-white text-2xl hover:bg-white hover:text-[#161616] transition-colors cursor-pointer uppercase tracking-widest">
+                Press Start
+            </button>
+        </div>
+
+        <!-- ================= 主畫面 ================= -->
+        <div id="main-screen" class="w-full max-w-3xl h-full min-h-screen flex flex-col relative pb-20 hidden">
+            
+            <!-- Header -->
+            <div class="w-full bg-[#e27a3f] text-center py-3 md:py-5 shadow-lg">
+                <h1 class="text-3xl md:text-5xl font-bold tracking-widest text-white">
+                    2026 貍想教育節
+                </h1>
+            </div>
+
+            <div class="text-center mt-6 mb-8">
+                <h2 class="text-2xl md:text-3xl text-[#89d0d8] tracking-widest">
+                    遊戲 Q & A
+                </h2>
+            </div>
+
+            <!-- 內容區塊 (點擊跳過打字) -->
+            <div id="qa-container" class="flex-1 px-6 md:px-12 flex flex-col gap-6 cursor-pointer relative z-10">
+                <!-- 題目區 -->
+                <div class="flex items-start gap-3">
+                    <div id="q-num" class="border-2 border-dashed border-[#95d58c] text-[#95d58c] px-3 py-1 text-xl md:text-2xl flex-none font-bold">
+                        Q1
+                    </div>
+                    <div id="q-text" class="flex-1 text-[#95d58c] text-xl md:text-2xl leading-relaxed font-bold mt-1 tracking-wide">
+                        題目載入中...
+                    </div>
+                </div>
+
+                <!-- 回答區 -->
+                <div class="flex items-start gap-3 mt-4">
+                    <div class="flex-none text-[#e27a3f] text-2xl mt-1 animate-pulse">
+                        ▶▶
+                    </div>
+                    <div class="flex-1 text-gray-200 text-lg md:text-xl leading-loose tracking-wide min-h-[300px]"><span id="a-text" class="whitespace-pre-wrap"></span><span id="cursor" class="inline-block w-3 h-5 bg-white ml-1 animate-blink"></span></div>
+                </div>
+            </div>
+
+            <!-- 底部裝飾與版權 -->
+            <div class="absolute bottom-20 w-full text-center text-gray-500 text-sm flex flex-col items-center gap-2 z-10 pointer-events-none">
+                <div id="mascot" class="text-3xl animate-bounce mb-2">
+                    ʕ•ᴥ•ʔ
+                </div>
+                <div class="flex items-center gap-2 text-gray-400">
+                    <span class="border border-gray-400 px-1 rounded-sm text-xs">U</span>
+                    <span>貍想教育</span>
+                </div>
+            </div>
+
+            <!-- 導覽列與控制項 -->
+            <div class="fixed bottom-0 left-0 w-full bg-[#161616] border-t border-[#333] p-4 flex justify-between items-center z-20">
+                <button id="btn-prev" class="px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 transition-colors">
+                    &lt; 上一題
+                </button>
+
+                <button id="btn-sound" class="px-4 py-2 text-gray-400 hover:text-white text-lg transition-colors">
+                    🔊 音效開
+                </button>
+
+                <button id="btn-next" class="px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors">
+                    下一題 &gt;
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 邏輯腳本 -->
+    <script>
+        // === Q&A 資料集 ===
+        const qaData = [
+            {
+                q: "貍想教育節是什麼？會有什麼活動？",
+                a: "貍想教育節是貍想一年一度的大型共學活動。\n\n在這裡，你可以看見來自不同背景的夥伴分享自己的學習與成長，也可以自由參與各種討論、體驗與活動。\n\n除了學員的成果發表之外，教育節最特別的地方在於「自主湧現」。\n\n意思是：\n每個人都可以發起活動、提出邀請或分享自己感興趣的主題。\n\n你可能會遇見：\n一場關於教育的深度討論\n一起探索西門町的城市任務\n技能交換與小型工作坊\n深夜聊天與人生故事分享\n臨時長出來的快閃活動\n\n每年的教育節內容都不太一樣，因為它是由每一位參與者共同創造出來的。"
+            },
+            {
+                q: "今年教育節的主題是什麼？",
+                a: "今年教育節主題：世界如何成為一場盛大的遊戲\n\n我們想重新想像：\n如果學習不只是完成任務，而是一場充滿探索、相遇、合作與創造的旅程，會是什麼樣子？\n\n在教育節裡，你不只是參加活動的人。\n你可以選擇探索、發起、邀請、創造。\n從一位參與者，慢慢成為一位創造者。"
+            },
+            {
+                q: "這是三日的課程嗎？",
+                a: "不是唷！\n\n教育節並不是一場從早到晚排滿課程的活動。\n除了既定活動之外，也保留許多自由探索與自主發起的空間。\n\n你可以選擇：\n聽分享\n發起討論\n參加任務\n和人聊天\n去城市探索\n\n甚至只是坐下來喝杯茶。"
+            },
+            {
+                q: "我沒有參加過貍想活動，適合來嗎？",
+                a: "非常適合。\n\n教育節本來就是許多人第一次認識貍想的入口。\n\n你不需要先認識任何人，也不需要有教育背景。\n只要帶著一點好奇心，就能找到屬於自己的參與方式。"
+            },
+            {
+                q: "我不是教育工作者，可以來嗎？",
+                a: "可以。\n\n雖然名稱叫做「教育節」，但我們討論的不只是學校教育。\n\n更多時候，我們關心的是：\n・ 人如何學習\n・ 人如何生活\n・ 人如何與他人合作\n・ 人如何成為自己\n\n因此不論你是學生、上班族、創作者、家長或教育工作者，都很適合參與。"
+            },
+            {
+                q: "我很內向，可以來嗎？",
+                a: "可以。\n\n教育節沒有規定一定要發言、一定要社交或一定要參加所有活動。\n\n你可以用自己的節奏探索與參與。\n有人喜歡認識很多新朋友，也有人喜歡安靜觀察與深度交流。\n\n兩種都很好。 :)"
+            }
+        ];
+
+        // 狀態變數
+        let started = false;
+        let currentIndex = 0;
+        let isTyping = false;
+        let soundEnabled = true;
+        
+        // 音效相關變數
+        let audioCtx = null;
+        let typingTimer = null;
+        let bgmTimer = null;
+        let noteIndex = 0;
+        const notes = [261.63, 329.63, 392.00, 523.25, 392.00, 329.63]; 
+
+        // DOM 元素
+        const startScreen = document.getElementById('start-screen');
+        const mainScreen = document.getElementById('main-screen');
+        const qNumEl = document.getElementById('q-num');
+        const qTextEl = document.getElementById('q-text');
+        const aTextEl = document.getElementById('a-text');
+        const cursorEl = document.getElementById('cursor');
+        const mascotEl = document.getElementById('mascot');
+        
+        const btnStart = document.getElementById('btn-start');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+        const btnSound = document.getElementById('btn-sound');
+        const qaContainer = document.getElementById('qa-container');
+
+        // --- 音效系統 (Web Audio API) ---
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        function playTypingSound() {
+            if (!soundEnabled || !audioCtx) return;
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'square';
+            osc.frequency.setValueAtTime(400 + Math.random() * 200, audioCtx.currentTime); 
+            
+            gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.03);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.03);
+        }
+
+        function playBGMNote() {
+            if (!soundEnabled || !audioCtx || !started) return;
+            
+            const freq = notes[noteIndex % notes.length];
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            
+            osc.type = 'triangle';
+            osc.frequency.setValueAtTime(freq / 2, audioCtx.currentTime); 
+            
+            // ★ 背景音樂音量調整為 0.035
+            gain.gain.setValueAtTime(0.035, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.2);
+            
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            
+            osc.start(audioCtx.currentTime);
+            osc.stop(audioCtx.currentTime + 0.2);
+            
+            noteIndex++;
+            bgmTimer = setTimeout(playBGMNote, 300); 
+        }
+
+        function toggleBGM() {
+            if (soundEnabled && started) {
+                if (!bgmTimer) playBGMNote();
+            } else {
+                if (bgmTimer) {
+                    clearTimeout(bgmTimer);
+                    bgmTimer = null;
+                }
+            }
+        }
+
+        // --- 畫面更新與打字邏輯 ---
+        function renderQA() {
+            qNumEl.innerText = `Q${currentIndex + 1}`;
+            qTextEl.innerText = qaData[currentIndex].q;
+            updateButtons();
+            startTyping();
+        }
+
+        function startTyping() {
+            const fullText = qaData[currentIndex].a;
+            aTextEl.innerText = "";
+            isTyping = true;
+            let charIndex = 0;
+            
+            cursorEl.style.display = 'inline-block';
+            mascotEl.innerText = "ʕ•ᴥ•ʔ";
+
+            if (typingTimer) clearInterval(typingTimer);
+
+            typingTimer = setInterval(() => {
+                charIndex++;
+                aTextEl.innerText = fullText.slice(0, charIndex); // ★ 使用 slice 確保第一個字不會消失
+                
+                const char = fullText.charAt(charIndex - 1);
+                if (char !== ' ' && char !== '\n') {
+                    playTypingSound();
+                }
+                
+                if (charIndex >= fullText.length) {
+                    finishTyping();
+                }
+            }, 45); 
+        }
+
+        function finishTyping() {
+            if (typingTimer) clearInterval(typingTimer);
+            isTyping = false;
+            aTextEl.innerText = qaData[currentIndex].a;
+            cursorEl.style.display = 'none';
+            mascotEl.innerText = "ʕ •̀ o •́ ʔ";
+        }
+
+        function updateButtons() {
+            // 上一題按鈕狀態
+            if (currentIndex === 0) {
+                btnPrev.className = "px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 cursor-not-allowed";
+                btnPrev.disabled = true;
+            } else {
+                btnPrev.className = "px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
+                btnPrev.disabled = false;
+            }
+
+            // 下一題按鈕狀態
+            if (currentIndex === qaData.length - 1) {
+                btnNext.className = "px-4 py-2 border-2 text-lg border-gray-600 text-gray-600 cursor-not-allowed";
+                btnNext.disabled = true;
+            } else {
+                btnNext.className = "px-4 py-2 border-2 text-lg border-[#e27a3f] text-[#e27a3f] hover:bg-[#e27a3f] hover:text-white transition-colors";
+                btnNext.disabled = false;
+            }
+        }
+
+        // --- 事件監聽器 ---
+        btnStart.addEventListener('click', () => {
+            initAudio();
+            started = true;
+            startScreen.classList.add('hidden');
+            mainScreen.classList.remove('hidden');
+            toggleBGM();
+            renderQA();
+        });
+
+        btnPrev.addEventListener('click', () => {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQA();
+            }
+        });
+
+        btnNext.addEventListener('click', () => {
+            if (currentIndex < qaData.length - 1) {
+                currentIndex++;
+                renderQA();
+            }
+        });
+
+        qaContainer.addEventListener('click', () => {
+            if (isTyping) {
+                finishTyping();
+            }
+        });
+
+        btnSound.addEventListener('click', () => {
+            soundEnabled = !soundEnabled;
+            btnSound.innerText = soundEnabled ? '🔊 音效開' : '🔇 音效關';
+            toggleBGM();
+        });
+
+    </script>
+</body>
+</html>
